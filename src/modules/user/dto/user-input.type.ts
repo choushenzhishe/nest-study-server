@@ -8,6 +8,6 @@ export class UserInput {
   desc: string;
   @Field()
   id?: string;
-  @Field()
+  @Field({ nullable: true })
   account?: string;
 }

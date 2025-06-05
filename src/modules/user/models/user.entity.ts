@@ -23,5 +23,5 @@ export class User {
   password: string;
 
   @Column({ comment: '账号', nullable: true })
-  account: string;
+  account?: string;
 }

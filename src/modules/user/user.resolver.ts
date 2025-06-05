@@ -18,7 +18,7 @@ export class UserResolver {
     return await this.userService.findOne(id);
   }
 
-  @Query(() => Boolean, { description: '更新用户' })
+  @Mutation(() => Boolean, { description: '更新用户' })
   async update(
     @Args('id') id: string,
     @Args('params') params: UserInput,
