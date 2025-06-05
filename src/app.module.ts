@@ -22,7 +22,7 @@ import { ApolloDriver } from '@nestjs/apollo';
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.gql',
       playground: true, // 显式启用Playground
     }),
     UserModule,
