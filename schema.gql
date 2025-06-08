@@ -11,9 +11,23 @@ type UserType {
   account: String!
 }
 
+type OSSType {
+  policy: String!
+  signature: String!
+  x_oss_date: String!
+  host: String!
+  x_oss_signature_version: String!
+  x_oss_credential: String!
+  dir: String
+  security_token: String!
+}
+
 type Query {
   """使用ID查询用户"""
   find(id: String!): UserType!
+
+  """获取oss信息"""
+  getOSSInfo: OSSType!
 }
 
 type Mutation {
@@ -29,6 +43,6 @@ type Mutation {
 input UserInput {
   name: String!
   desc: String!
-  id: String!
+  id: String
   account: String
 }

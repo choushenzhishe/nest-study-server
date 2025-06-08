@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
+import { OssModule } from './modules/oss/oss.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ApolloDriver } from '@nestjs/apollo';
       playground: true, // 显式启用Playground
     }),
     UserModule,
+    OssModule,
   ],
   controllers: [AppController],
   providers: [AppService],
