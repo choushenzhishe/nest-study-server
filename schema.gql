@@ -49,6 +49,10 @@ type Mutation {
 
   """登录"""
   login(tel: String!, code: String!): SimpleResult!
+
+  """通过账号密码登录"""
+  loginByAccount(account: String!, password: String!): SimpleResult!
+  createUserByPassword(params: StudentInput!): SimpleResult!
 }
 
 input UserInput {
@@ -56,4 +60,9 @@ input UserInput {
   desc: String!
   id: String
   account: String
+}
+
+input StudentInput {
+  account: String!
+  password: String!
 }

@@ -2,7 +2,7 @@ import { ClassType, Int } from 'type-graphql';
 import { Page } from './page.type';
 import { Field, ObjectType } from '@nestjs/graphql';
 
-interface IResult<T> {
+export interface IResult<T> {
   code: number;
   message: string;
   data?: T;

@@ -10,12 +10,15 @@ import {
   LOGIN_FAILED,
   SUCCESS,
 } from '@/common/constants/code';
+import { studentService } from '../student/student.service';
+import * as crypto from 'crypto';
 
 @Resolver()
 export class AuthResolver {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly studentService: studentService,
   ) {}
 
   @Mutation(() => SimpleResult, { description: '发送验证码' })
@@ -47,6 +50,32 @@ export class AuthResolver {
         message: '登录成功',
       };
     return { code: LOGIN_FAILED, message: '登录失败,手机号或者验证码不正确' };
-    // return await this.authService.login(tel, code);
+  }
+
+  @Mutation(() => SimpleResult, { description: '通过账号密码登录' })
+  async loginByAccount(
+    @Args('account') account: string,
+    @Args('password') password: string,
+  ): Promise<SimpleResult> {
+    const res = await this.studentService.findByAccount(account);
+    if (!res) {
+      return {
+        code: ACCOUNT_NOT_EXIST,
+        message: '账号不存在',
+      };
+    } else {
+      const md5Pwd = crypto.createHash('md5').update(password).digest('hex');
+      if (res.password === md5Pwd) {
+        return {
+          code: SUCCESS,
+          message: '登录成功',
+        };
+      } else {
+        return {
+          code: LOGIN_FAILED,
+          message: '密码错误',
+        };
+      }
+    }
   }
 }
