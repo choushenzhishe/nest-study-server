@@ -24,4 +24,9 @@ export class User {
 
   @Column({ comment: '账号', nullable: true })
   account?: string;
+
+  @Column({ comment: '验证码', nullable: true })
+  code?: string;
+  @Column({ comment: '验证码创建时间', nullable: true })
+  codeCreatedTime?: Date;
 }

@@ -20,6 +20,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@alicloud/credentials": "^2.4.3",
+    "@alicloud/dysmsapi20170525": "^4.1.1",
+    "@alicloud/openapi-client": "^0.4.14",
+    "@alicloud/tea-util": "^1.4.10",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^4.0.2",
@@ -30,10 +34,12 @@
     "ali-oss": "^6.23.0",
     "apollo-server-express": "^3.13.0",
     "class-validator": "^0.14.2",
+    "dayjs": "^1.11.13",
     "graphql": "^16.11.0",
     "mysql2": "^3.14.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
+    "type-graphql": "2.0.0-rc.2",
     "typeorm": "^0.3.24"
   },
   "devDependencies": {

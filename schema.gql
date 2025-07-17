@@ -22,6 +22,11 @@ type OSSType {
   security_token: String!
 }
 
+type SimpleResult {
+  code: Int!
+  message: String!
+}
+
 type Query {
   """使用ID查询用户"""
   find(id: String!): UserType!
@@ -38,6 +43,12 @@ type Mutation {
 
   """删除用户"""
   del(id: String!): Boolean!
+
+  """发送验证码"""
+  sendCodeMsg(tel: String!): SimpleResult!
+
+  """登录"""
+  login(tel: String!, code: String!): SimpleResult!
 }
 
 input UserInput {
