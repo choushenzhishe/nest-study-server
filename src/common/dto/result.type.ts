@@ -50,8 +50,8 @@ export function createResults<T extends object>(
 }
 @ObjectType()
 export class SimpleResult {
-  @Field(() => Int)
-  code: number;
+  @Field(() => Int || String)
+  code: number | string;
   @Field(() => String)
   message: string;
 }

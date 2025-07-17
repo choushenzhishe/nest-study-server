@@ -36,7 +36,7 @@ export class AuthService {
       const result = await this.userService.updateCode(user.id, code);
       if (result) {
         return {
-          code: SUCCESS,
+          code,
           message: '获取验证码成功',
         };
       }
@@ -49,7 +49,7 @@ export class AuthService {
       });
       if (result) {
         return {
-          code: SUCCESS,
+          code,
           message: '获取验证码成功',
         };
       }
