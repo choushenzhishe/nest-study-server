@@ -25,6 +25,7 @@ type OSSType {
 type SimpleResult {
   code: Int!
   message: String!
+  data: String
 }
 
 type Query {

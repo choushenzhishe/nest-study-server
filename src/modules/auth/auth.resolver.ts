@@ -12,6 +12,7 @@ import {
 } from '@/common/constants/code';
 import { studentService } from '../student/student.service';
 import * as crypto from 'crypto';
+import { JwtService } from '@nestjs/jwt';
 
 @Resolver()
 export class AuthResolver {
@@ -19,6 +20,7 @@ export class AuthResolver {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly studentService: studentService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Mutation(() => SimpleResult, { description: '发送验证码' })
@@ -44,11 +46,15 @@ export class AuthResolver {
     if (dayjs().diff(dayjs(user.codeCreatedTime)) > 60 * 60 * 1000)
       return { code: CODE_EXPIRED, message: '验证码已过期' };
 
-    if (user.code === code)
+    if (user.code === code) {
+      const token = this.jwtService.sign({ id: user.id });
       return {
         code: SUCCESS,
         message: '登录成功',
+        data: token,
       };
+    }
+
     return { code: LOGIN_FAILED, message: '登录失败,手机号或者验证码不正确' };
   }
 
@@ -66,9 +72,12 @@ export class AuthResolver {
     } else {
       const md5Pwd = crypto.createHash('md5').update(password).digest('hex');
       if (res.password === md5Pwd) {
+        const token = this.jwtService.sign({ id: res.id });
+        console.log('🚀 ~ file: auth.resolver.ts ~ line 76 ~ ', token);
         return {
           code: SUCCESS,
           message: '登录成功',
+          data: token,
         };
       } else {
         return {

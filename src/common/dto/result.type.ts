@@ -54,4 +54,6 @@ export class SimpleResult {
   code: number | string;
   @Field(() => String)
   message: string;
+  @Field(() => String, { nullable: true })
+  data?: string;
 }
