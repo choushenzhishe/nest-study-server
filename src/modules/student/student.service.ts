@@ -35,4 +35,8 @@ export class studentService {
       where: { account },
     });
   }
+
+  async find(id: string): Promise<Student | null> {
+    return await this.studentRepository.findOne({ where: { id } });
+  }
 }

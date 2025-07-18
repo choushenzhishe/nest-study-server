@@ -9,6 +9,15 @@ type UserType {
 
   """账号信息"""
   account: String!
+
+  """手机号"""
+  tel: String
+}
+
+type SimpleResult {
+  code: Int!
+  message: String!
+  data: String
 }
 
 type OSSType {
@@ -22,15 +31,12 @@ type OSSType {
   security_token: String!
 }
 
-type SimpleResult {
-  code: Int!
-  message: String!
-  data: String
-}
-
 type Query {
   """使用ID查询用户"""
   find(id: String!): UserType!
+
+  """获取用户信息"""
+  getUserInfo: UserType!
 
   """获取oss信息"""
   getOSSInfo: OSSType!
@@ -44,6 +50,7 @@ type Mutation {
 
   """删除用户"""
   del(id: String!): Boolean!
+  createUserByPassword(params: StudentInput!): SimpleResult!
 
   """发送验证码"""
   sendCodeMsg(tel: String!): SimpleResult!
@@ -53,7 +60,6 @@ type Mutation {
 
   """通过账号密码登录"""
   loginByAccount(account: String!, password: String!): SimpleResult!
-  createUserByPassword(params: StudentInput!): SimpleResult!
 }
 
 input UserInput {

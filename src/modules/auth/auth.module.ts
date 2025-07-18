@@ -15,7 +15,7 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     JwtModule.register({
       secret: JWT_SECRET,
-      signOptions: { expiresIn: '30s' },
+      signOptions: { expiresIn: '120h' },
     }),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Student]),
