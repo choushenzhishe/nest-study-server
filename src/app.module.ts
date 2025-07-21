@@ -7,7 +7,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { OssModule } from './modules/oss/oss.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { StudentModule } from './modules/student/student.module';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { StudentModule } from './modules/student/student.module';
     UserModule,
     OssModule,
     AuthModule,
-    StudentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

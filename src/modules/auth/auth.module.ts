@@ -5,9 +5,6 @@ import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { User } from '../user/models/user.entity';
 import { UserService } from '../user/user.service';
-import { studentService } from '../student/student.service';
-// import { StudentModule } from '../student/student.module';
-import { Student } from '../student/models/student.entity';
 import { JWT_SECRET } from '@/common/constants/aliyun';
 import { JwtStrategy } from './jwt.strategy';
 
@@ -18,7 +15,6 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '120h' },
     }),
     TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([Student]),
   ],
   providers: [
     JwtStrategy,
@@ -26,7 +22,6 @@ import { JwtStrategy } from './jwt.strategy';
     AuthResolver,
     AuthService,
     UserService,
-    studentService,
   ],
   exports: [AuthService],
 })

@@ -12,4 +12,6 @@ export class UserType {
   account?: string;
   @Field({ description: '手机号', nullable: true })
   tel?: string;
+  @Field({ description: '头像', nullable: true })
+  avatar?: string;
 }

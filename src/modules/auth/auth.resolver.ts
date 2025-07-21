@@ -10,7 +10,6 @@ import {
   LOGIN_FAILED,
   SUCCESS,
 } from '@/common/constants/code';
-import { studentService } from '../student/student.service';
 import * as crypto from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 
@@ -19,7 +18,6 @@ export class AuthResolver {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
-    private readonly studentService: studentService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -63,7 +61,7 @@ export class AuthResolver {
     @Args('account') account: string,
     @Args('password') password: string,
   ): Promise<SimpleResult> {
-    const res = await this.studentService.findByAccount(account);
+    const res = await this.userService.findByAccount(account);
     if (!res) {
       return {
         code: ACCOUNT_NOT_EXIST,

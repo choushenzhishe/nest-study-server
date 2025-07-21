@@ -1,24 +1,29 @@
 import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UserInput } from './dto/user-input.type';
-import { studentService } from '../student/student.service';
-
+import { PasswordUserInput } from './dto/password-user-input.type';
 import { UserType } from './dto/user.type';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@/guards/auth.guards';
-import { Student } from '../student/models/student.entity';
+import { SimpleResult } from '@/common/dto/result.type';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
 export class UserResolver {
   constructor(
     private readonly userService: UserService,
-    private readonly studentService: studentService,
   ) {}
 
   @Mutation(() => Boolean)
   async create(@Args('params') params: UserInput): Promise<boolean> {
     return await this.userService.create(params);
+  }
+
+  @Mutation(() => SimpleResult)
+  async createUserByPassword(
+    @Args('params') params: PasswordUserInput,
+  ): Promise<SimpleResult> {
+    return await this.userService.createByPassword(params);
   }
 
   @Query(() => UserType, { description: '使用ID查询用户' })
@@ -33,9 +38,7 @@ export class UserResolver {
     if (!user || !user.id) {
       throw new Error('未登录或用户信息不存在');
     }
-    let found;
-    found = await this.userService.findOne(user.id);
-    if (!found) found = await this.studentService.find(user.id);
+    const found = await this.userService.findOne(user.id);
     if (!found) {
       throw new Error('用户不存在');
     }

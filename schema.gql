@@ -12,6 +12,9 @@ type UserType {
 
   """手机号"""
   tel: String
+
+  """头像"""
+  avatar: String
 }
 
 type SimpleResult {
@@ -44,13 +47,13 @@ type Query {
 
 type Mutation {
   create(params: UserInput!): Boolean!
+  createUserByPassword(params: PasswordUserInput!): SimpleResult!
 
   """更新用户"""
   update(id: String!, params: UserInput!): Boolean!
 
   """删除用户"""
   del(id: String!): Boolean!
-  createUserByPassword(params: StudentInput!): SimpleResult!
 
   """发送验证码"""
   sendCodeMsg(tel: String!): SimpleResult!
@@ -69,7 +72,7 @@ input UserInput {
   account: String
 }
 
-input StudentInput {
+input PasswordUserInput {
   account: String!
   password: String!
 }

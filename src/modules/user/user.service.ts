@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { User } from './models/user.entity';
 import { Repository, DeepPartial } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as crypto from 'crypto';
+import { SimpleResult } from '@/common/dto/result.type';
+import { CREATE_USER_FAILED, SUCCESS } from '@/common/constants/code';
 
 @Injectable()
 export class UserService {
@@ -51,5 +54,30 @@ export class UserService {
     });
     console.log('res', res);
     return res && res.affected > 0;
+  }
+
+  // 通过密码创建用户（从Student模块迁移）
+  async createByPassword(entity: DeepPartial<User>): Promise<SimpleResult> {
+    if (entity.password) {
+      entity.password = crypto
+        .createHash('md5')
+        .update(entity.password)
+        .digest('hex');
+    }
+    const res = await this.UserRepository.insert(entity);
+    if (res)
+      return {
+        code: SUCCESS,
+        message: '创建用户成功',
+      };
+
+    return { code: CREATE_USER_FAILED, message: '创建用户失败' };
+  }
+
+  // 通过账号查找用户（从Student模块迁移）
+  async findByAccount(account: string): Promise<User | null> {
+    return await this.UserRepository.findOne({
+      where: { account },
+    });
   }
 }
