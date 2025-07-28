@@ -7,9 +7,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { OssModule } from './modules/oss/oss.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // 使配置模块全局可用
+      envFilePath: '.env', // 指定环境变量文件路径
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',

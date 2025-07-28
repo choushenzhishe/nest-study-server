@@ -9,6 +9,7 @@ import { getStandardRegion } from 'ali-oss/lib/common/utils/getStandardRegion';
 @Injectable()
 export class OSSService {
   async getSignature(): Promise<OSSType> {
+    console.log('🚀 ~ file: oss.service.ts ~ line 12 ~ ', process.env);
     // 初始化STS客户端
     let sts = new STS({
       accessKeyId: process.env.OSS_ACCESS_KEY_ID, // 从环境变量中获取RAM用户的AccessKey ID
@@ -119,6 +120,7 @@ export class OSSService {
       signature: signature,
       dir: 'user-dir', // 指定上传到OSS的文件前缀
       security_token: client.options.stsToken,
+      accessId: process.env.OSS_ACCESS_KEY_ID,
     };
   }
 }

@@ -32,6 +32,7 @@ type OSSType {
   x_oss_credential: String!
   dir: String
   security_token: String!
+  accessId: String!
 }
 
 type Query {
@@ -49,8 +50,8 @@ type Mutation {
   create(params: UserInput!): Boolean!
   createUserByPassword(params: PasswordUserInput!): SimpleResult!
 
-  """更新用户"""
-  update(id: String!, params: UserInput!): Boolean!
+  """更新用户信息"""
+  updateUser(id: String!, params: UserInput!): SimpleResult!
 
   """删除用户"""
   del(id: String!): Boolean!
@@ -68,8 +69,7 @@ type Mutation {
 input UserInput {
   name: String!
   desc: String!
-  id: String
-  account: String
+  avatar: String
 }
 
 input PasswordUserInput {

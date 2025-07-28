@@ -7,7 +7,5 @@ export class UserInput {
   @Field()
   desc: string;
   @Field({ nullable: true })
-  id?: string;
-  @Field({ nullable: true })
-  account?: string;
+  avatar?: string;
 }

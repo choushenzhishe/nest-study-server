@@ -6,13 +6,12 @@ import { UserType } from './dto/user.type';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@/guards/auth.guards';
 import { SimpleResult } from '@/common/dto/result.type';
+import { SUCCESS, USER_UPDATE_FAILED } from '@/common/constants/code';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
 export class UserResolver {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Mutation(() => Boolean)
   async create(@Args('params') params: UserInput): Promise<boolean> {
@@ -45,12 +44,24 @@ export class UserResolver {
     return found;
   }
 
-  @Mutation(() => Boolean, { description: '更新用户' })
-  async update(
+  // @Mutation(() => Boolean, { description: '更新用户' })
+  // async update(
+  //   @Args('id') id: string,
+  //   @Args('params') params: UserInput,
+  // ): Promise<boolean> {
+  //   return await this.userService.update(id, params);
+  // }
+
+  @Mutation(() => SimpleResult, { description: '更新用户信息' })
+  async updateUser(
     @Args('id') id: string,
     @Args('params') params: UserInput,
-  ): Promise<boolean> {
-    return await this.userService.update(id, params);
+  ): Promise<SimpleResult> {
+    const res = await this.userService.update(id, params);
+    if (res) {
+      return { code: SUCCESS, message: '更新成功' };
+    }
+    return { code: USER_UPDATE_FAILED, message: '更新失败' };
   }
 
   @Mutation(() => Boolean, { description: '删除用户' })

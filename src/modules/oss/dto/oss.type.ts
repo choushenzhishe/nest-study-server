@@ -18,4 +18,6 @@ export class OSSType {
   dir: string;
   @Field()
   security_token: string;
+  @Field()
+  accessId: string;
 }

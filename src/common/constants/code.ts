@@ -7,3 +7,4 @@ export const CODE_EXPIRED = 10005;
 export const LOGIN_FAILED = 10006;
 export const CREATE_USER_FAILED = 10007;
 export const USER_NOR_EXIST = 10008;
+export const USER_UPDATE_FAILED = 10009;
