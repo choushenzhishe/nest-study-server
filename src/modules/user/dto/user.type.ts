@@ -1,13 +1,12 @@
+import { CommonType } from '@/common/dto/common.type';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class UserType {
+export class UserType extends CommonType {
   @Field()
   name: string;
   @Field()
   desc: string;
-  @Field()
-  id?: string;
   @Field({ description: '账号信息' })
   account?: string;
   @Field({ description: '手机号', nullable: true })

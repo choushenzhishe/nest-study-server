@@ -90,9 +90,23 @@ export class UserService {
     start: number;
     length: number;
   }): Promise<[UserType[], number]> {
-    return this.UserRepository.findAndCount({
+    const [users, count] = await this.UserRepository.findAndCount({
       skip: start,
       take: length,
+      order: {
+        createAt: 'DESC',
+      },
     });
+
+    // 手动映射 User 到 UserType
+    const user_Types: UserType[] = users.map(
+      (user): UserType => ({
+        ...user,
+        createdAt: user.createAt, // 假设 User 实体中 createAt 对应 UserType 的 createdAt
+        createdBy: user.createBy, // 同上，根据实际字段对应关系调整
+      }),
+    );
+
+    return [user_Types, count];
   }
 }

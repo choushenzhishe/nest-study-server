@@ -78,6 +78,5 @@ export class UserResolver {
         page: { length, start, total },
       };
     }
-    return { code: 500, message: '查询失败' };
   }
 }
