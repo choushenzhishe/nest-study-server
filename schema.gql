@@ -5,7 +5,6 @@
 type UserType {
   name: String!
   desc: String!
-  id: String!
 
   """账号信息"""
   account: String!

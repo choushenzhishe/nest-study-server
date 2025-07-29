@@ -30,7 +30,7 @@ export class UserResolver {
 
   @Query(() => UserType, { description: '使用ID查询用户' })
   async find(@Args('id') id: string): Promise<UserType> {
-    return await this.userService.findOne(id);
+    return await this.userService.findOneAsUserType(id);
   }
 
   @Query(() => UserType, { description: '获取用户信息' })
@@ -39,7 +39,7 @@ export class UserResolver {
     if (!user || !user.id) {
       throw new Error('未登录或用户信息不存在');
     }
-    const found = await this.userService.findOne(user.id);
+    const found = await this.userService.findOneAsUserType(user.id);
     if (!found) {
       throw new Error('用户不存在');
     }

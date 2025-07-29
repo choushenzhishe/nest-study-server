@@ -44,6 +44,33 @@ export class UserService {
     return res;
   }
 
+  // 查找一个用户并返回 UserType
+  async findOneAsUserType(id: string): Promise<UserType> {
+    const user = await this.UserRepository.findOne({ where: { id } });
+    if (!user) {
+      return null;
+    }
+    return this.convertUserToUserType(user);
+  }
+
+  // 将 User 实体转换为 UserType
+  private convertUserToUserType(user: User): UserType {
+    return {
+      id: parseInt(user.id) || 0,
+      name: user.name,
+      desc: user.desc,
+      account: user.account,
+      tel: user.tel,
+      avatar: user.avatar,
+      createdAt: user.createAt,
+      createdBy: user.createBy ? parseInt(user.createBy) : null,
+      updatedAt: user.updatedAt,
+      updatedBy: user.updatedBy ? parseInt(user.updatedBy) : null,
+      deletedAt: user.deletedAt,
+      deletedBy: user.deletedBy ? parseInt(user.deletedBy) : null,
+    };
+  }
+
   async findByTel(tel: string): Promise<User> {
     const res = await this.UserRepository.findOne({ where: { tel } });
     return res;
@@ -101,9 +128,18 @@ export class UserService {
     // 手动映射 User 到 UserType
     const user_Types: UserType[] = users.map(
       (user): UserType => ({
-        ...user,
-        createdAt: user.createAt, // 假设 User 实体中 createAt 对应 UserType 的 createdAt
-        createdBy: user.createBy, // 同上，根据实际字段对应关系调整
+        id: parseInt(user.id) || 0, // 将 string UUID 转换为 number，如果转换失败则使用 0
+        name: user.name,
+        desc: user.desc,
+        account: user.account,
+        tel: user.tel,
+        avatar: user.avatar,
+        createdAt: user.createAt,
+        createdBy: user.createBy ? parseInt(user.createBy) : null,
+        updatedAt: user.updatedAt,
+        updatedBy: user.updatedBy ? parseInt(user.updatedBy) : null,
+        deletedAt: user.deletedAt,
+        deletedBy: user.deletedBy ? parseInt(user.deletedBy) : null,
       }),
     );
 
