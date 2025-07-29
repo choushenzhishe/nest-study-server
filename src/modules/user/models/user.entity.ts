@@ -1,11 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { IsNotEmpty } from 'class-validator';
+import { CommonEntity } from '@/common/entitles/common.entity';
 
 @Entity('user')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class User extends CommonEntity {
   @Column({
     comment: '昵称',
     default: '',

@@ -7,6 +7,9 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@/guards/auth.guards';
 import { SimpleResult } from '@/common/dto/result.type';
 import { SUCCESS, USER_UPDATE_FAILED } from '@/common/constants/code';
+import { CurUser } from '@/common/decorators/current-user.decorator';
+import { UserResults } from './dto/result-user.output';
+import { PageInput } from '@/common/dto/page.input';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
@@ -31,8 +34,7 @@ export class UserResolver {
   }
 
   @Query(() => UserType, { description: '获取用户信息' })
-  async getUserInfo(@Context() ctx: any): Promise<UserType> {
-    const user = ctx.req.user;
+  async getUserInfo(@CurUser() user: any): Promise<UserType> {
     console.log('🚀 ~ file: user.resolver.ts ~ line 27 ~ ', user);
     if (!user || !user.id) {
       throw new Error('未登录或用户信息不存在');
@@ -43,14 +45,6 @@ export class UserResolver {
     }
     return found;
   }
-
-  // @Mutation(() => Boolean, { description: '更新用户' })
-  // async update(
-  //   @Args('id') id: string,
-  //   @Args('params') params: UserInput,
-  // ): Promise<boolean> {
-  //   return await this.userService.update(id, params);
-  // }
 
   @Mutation(() => SimpleResult, { description: '更新用户信息' })
   async updateUser(
@@ -67,5 +61,23 @@ export class UserResolver {
   @Mutation(() => Boolean, { description: '删除用户' })
   async del(@Args('id') id: string): Promise<boolean> {
     return await this.userService.del(id);
+  }
+
+  @Query(() => UserResults)
+  async findUsers(@Args('page') page: PageInput): Promise<UserResults> {
+    const { start, length } = page;
+    const [results, total] = await this.userService.findUsers({
+      start,
+      length,
+    });
+    if (results) {
+      return {
+        code: SUCCESS,
+        data: results,
+        message: '获取成功',
+        page: { length, start, total },
+      };
+    }
+    return { code: 500, message: '查询失败' };
   }
 }

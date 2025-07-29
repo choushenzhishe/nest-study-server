@@ -1,10 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { User } from './models/user.entity';
 import { Repository, DeepPartial } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
 import { SimpleResult } from '@/common/dto/result.type';
 import { CREATE_USER_FAILED, SUCCESS } from '@/common/constants/code';
+import { UserType } from './dto/user.type';
+import { UserResults } from './dto/result-user.output';
+import { Args } from 'type-graphql';
+import { PageInput } from '@/common/dto/page.input';
 
 @Injectable()
 export class UserService {
@@ -39,8 +43,6 @@ export class UserService {
     console.log('res', res);
     return res;
   }
-
-
 
   async findByTel(tel: string): Promise<User> {
     const res = await this.UserRepository.findOne({ where: { tel } });
@@ -78,6 +80,19 @@ export class UserService {
   async findByAccount(account: string): Promise<User | null> {
     return await this.UserRepository.findOne({
       where: { account },
+    });
+  }
+
+  async findUsers({
+    start,
+    length,
+  }: {
+    start: number;
+    length: number;
+  }): Promise<[UserType[], number]> {
+    return this.UserRepository.findAndCount({
+      skip: start,
+      take: length,
     });
   }
 }

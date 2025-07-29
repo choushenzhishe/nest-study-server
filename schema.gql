@@ -17,10 +17,23 @@ type UserType {
   avatar: String
 }
 
+type Page {
+  total: Int!
+  start: Int!
+  length: Int!
+}
+
 type SimpleResult {
   code: Int!
   message: String!
   data: String
+}
+
+type UserResults {
+  code: Int!
+  message: String!
+  data: [UserType!]
+  page: Page
 }
 
 type OSSType {
@@ -40,9 +53,15 @@ type Query {
 
   """获取用户信息"""
   getUserInfo: UserType!
+  findUsers(page: PageInput!): UserResults!
 
   """获取oss信息"""
   getOSSInfo: OSSType!
+}
+
+input PageInput {
+  length: Float!
+  start: Float!
 }
 
 type Mutation {
