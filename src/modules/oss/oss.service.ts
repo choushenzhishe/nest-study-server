@@ -9,21 +9,19 @@ import { getStandardRegion } from 'ali-oss/lib/common/utils/getStandardRegion';
 @Injectable()
 export class OSSService {
   async getSignature(): Promise<OSSType> {
-    console.log('🚀 ~ file: oss.service.ts ~ line 12 ~ ', process.env);
     // 初始化STS客户端
     let sts = new STS({
       accessKeyId: process.env.OSS_ACCESS_KEY_ID, // 从环境变量中获取RAM用户的AccessKey ID
-      accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET, // 从环境变量中获取RAM用户的AccessKey
+      accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET, // 从环境变量中获取RAM用户的AccessKey Secret
     });
 
     // 调用assumeRole接口获取STS临时访问凭证
     const result = await sts.assumeRole(
       process.env.OSS_ROLE_ARN,
       '',
-      '43200',
-      process.env.OSS_ROLE_SESSION_NAME || 'chou',
+      '3600',
+      'yourRoleSessionName',
     ); // 从环境变量中获取RAM角色ARN，并设置临时访问凭证有效期为3600秒，角色会话名称为yourRoleSessionName可自定义
-    console.log('result', result);
 
     // 提取临时访问凭证中的AccessKeyId、AccessKeySecret和SecurityToken
     const accessKeyId = result.credentials.AccessKeyId;
@@ -108,7 +106,6 @@ export class OSSService {
       Buffer.from(policy2Str(policy), 'utf8').toString('base64'),
     );
     formData.set('signature', signature);
-    console.log(formData, '123');
 
     // 返回表单数据
     return {
@@ -120,7 +117,6 @@ export class OSSService {
       signature: signature,
       dir: 'user-dir', // 指定上传到OSS的文件前缀
       security_token: client.options.stsToken,
-      accessId: process.env.OSS_ACCESS_KEY_ID,
     };
   }
 }

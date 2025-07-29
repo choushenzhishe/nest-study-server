@@ -32,7 +32,6 @@ type OSSType {
   x_oss_credential: String!
   dir: String
   security_token: String!
-  accessId: String!
 }
 
 type Query {
