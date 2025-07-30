@@ -22,7 +22,7 @@ export class CommonEntity {
     nullable: true,
   })
   @IsOptional()
-  createBy: string;
+  createdBy: string;
 
   @Column({
     type: 'timestamp',

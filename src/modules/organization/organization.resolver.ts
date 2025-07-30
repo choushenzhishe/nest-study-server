@@ -5,13 +5,18 @@ import { OrganizationType } from './dto/organization.type';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@/guards/auth.guards';
 import { SimpleResult } from '@/common/dto/result.type';
-import { ORGANIZATION_NOT_EXIST, SUCCESS, } from '@/common/constants/code';
+import {
+  ORG_FAIL,
+  ORGANIZATION_NOT_EXIST,
+  SUCCESS,
+} from '@/common/constants/code';
 import { CurUser, CurUserId } from '@/common/decorators/current-user.decorator';
 import {
   OrganizationResult,
   OrganizationResults,
 } from './dto/result-organization.output';
-import { PageInput } from '@/common/dto/page.input';
+import { Organization } from './models/organization.entity';
+import { DeepPartial } from 'typeorm';
 
 @Resolver()
 @UseGuards(GqlAuthGuard)
@@ -22,7 +27,36 @@ export class OrganizationResolver {
   async getOrganizationInfo(@CurUserId() userId: string) {
     const result = await this.organizationService.findById(userId);
     if (result) return { code: SUCCESS, data: result, message: '获取成功' };
-    return { code: ORGANIZATION_NOT_EXIST, message: '用户信息不存在' };
+    return { code: ORGANIZATION_NOT_EXIST, message: '门店信息不存在' };
+  }
+
+  @Mutation(() => OrganizationResult)
+  async commitOrganizationInfo(
+    @Args('params') params: OrganizationInput | DeepPartial<Organization>,
+    @CurUserId() userId: string,
+    @Args('id', { nullable: true }) id?: string,
+  ) {
+    if (id) {
+      const organiaziton = await this.organizationService.findById(id);
+      if (!organiaziton) {
+        return { code: ORGANIZATION_NOT_EXIST, message: '门店信息不存在' };
+      } else {
+        const res = await this.organizationService.updateById(organiaziton.id, {
+          ...params,
+          updatedBy: userId,
+        } as DeepPartial<Organization>);
+        if (res) {
+          return { code: SUCCESS, message: '更新成功' };
+        }
+      }
+    } else {
+      const res = await this.organizationService.create({
+        ...params,
+        createdBy: userId,
+      } as DeepPartial<Organization>);
+      if (res) return { code: SUCCESS, message: '创建成功' };
+    }
+    return { code: ORG_FAIL, message: '操作失败' };
   }
 
   // @Mutation(() => Boolean)

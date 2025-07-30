@@ -8,5 +8,5 @@ export const LOGIN_FAILED = 10006;
 export const CREATE_USER_FAILED = 10007;
 export const USER_NOR_EXIST = 10008;
 export const USER_UPDATE_FAILED = 10009;
-
 export const ORGANIZATION_NOT_EXIST = 10010;
+export const ORG_FAIL = 10011
